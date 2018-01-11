@@ -1,0 +1,42 @@
+stocklist <- read.csv(file = choose.files(), stringsAsFactors = FALSE, strip.white = TRUE, header = TRUE)
+dim(stocklist)
+
+for (i in stocklist$Symbol[startsWith(stocklist$Symbol, 1)]) {
+  
+  tws <- twsConnect()
+  
+  contract2 <- twsEquity(syllable = "i", exch = "SEHK", currency = "HKD")
+  
+  AAPL <- reqHistoricalData(tws, 
+                            Contract = contract2, 
+                            endDateTime = "20171231 16:00:00", 
+                            barSize = "1 min", 
+                            duration ="10 D", 
+                            useRTH = 1, 
+                            whatToShow = "TRADES")
+  
+  Stoch <- stoch(HLC = HLC(hsiData),nFastK = 9, nFastD = 9, nSlowD = 9)
+  
+  MACD <- MACD(Cl(hsiData), nFast = 6, nSlow = 13, nSig = 5)
+  
+  MACD <- MACD(Cl(hsiData), nFast = 12, nSlow = 26, nSig = 9)
+  
+  ATR        <- ATR(HLC = HLC(hsiData), n = 9)
+  
+  RSI <- RSI(Cl(hsiData), n = 5)
+  
+  RSI <- RSI(Cl(hsiData), n = 9)
+  
+  Aroon      <- aroon(HL = Cl(hsiData), n = 9)
+  
+  BBand      <- BBands(HLC = HLC(hsiData), n = 9, sd = 1)
+  
+  ADX        <- ADX(HLC = HLC(hsiData), n = 9)
+  
+  chaikinAD <- chaikinAD(HLC = HLC(hsiData), volume = hsiData[,5])
+  
+  OBV        <- OBV(price = Cl(hsiData), volume = hsiData[,5])
+  
+  ATR        <- ATR(HLC = HLC(hsiData), n = 9)
+  
+}
